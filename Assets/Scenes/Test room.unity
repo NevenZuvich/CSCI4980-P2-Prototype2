@@ -1616,9 +1616,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1732fa1fb00645b498d849f1e6d77ec2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  speed: 5
-  rb: {fileID: 0}
-  input: {x: 0, y: 0, z: 0}
 --- !u!54 &1589780068
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1658,11 +1655,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1510d2e39524d1c41a880947bb3f03d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
+  respawnPosition: {x: 0, y: 0, z: 0}
   crouchingHeight: 1.2
   crouchingSpeed: 4
   crouchingCameraYOffset: 0.2
   slideImpulse: 8
   slideBufferTime: 0.2
+  slideCooldown: 2.2
   standingCameraYOffset: 0.9
   cameraTransitionSpeed: 10
   groundAcceleration: 85.5

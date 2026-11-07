@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
+  [SerializeField] GameObject spawnPosObj;
 
   public Vector3 respawnPosition;
 
@@ -22,9 +23,12 @@ public class PlayerController : MonoBehaviour
 
   [Header("Sliding")]
   [SerializeField] float slideImpulse = 8f;
-  [SerializeField] float slideBufferTime = 0.2f;
+  [SerializeField] float slideBufferTime = 0.3f;
+  [SerializeField] float slideCooldown = 2.2f; // Duration before another ground slide can trigger
 
   float slideBufferTimer;
+  float slideCooldownTimer;
+  bool canSlide = true;
 
   [Header("Camera")]
   [SerializeField] float standingCameraYOffset = 0.9f;
@@ -99,6 +103,9 @@ public class PlayerController : MonoBehaviour
       RigidbodyConstraints.FreezeRotationZ;
 
     yaw = transform.eulerAngles.y;
+    
+    if (spawnPosObj != null)
+      gameObject.transform.position = spawnPosObj.transform.position;
   }
 
   void Update()
@@ -129,6 +136,17 @@ public class PlayerController : MonoBehaviour
     else
     {
       slideBufferTimer -= Time.deltaTime;
+    }
+
+    // Tick down the slide cooldown timer
+    if (slideCooldownTimer > 0f)
+    {
+      slideCooldownTimer -= Time.deltaTime;
+    }
+    else if (IsGrounded())
+    {
+      // Re-enable sliding once grounded cooldown finishes
+      canSlide = true;
     }
 
     // Handle jump buffer
@@ -191,13 +209,21 @@ public class PlayerController : MonoBehaviour
       ApplyAirMovement(moveDirection);
     }
 
+    if (!IsGrounded())
+    {
+        canSlide = true;
+    }
+
     // Slide Impulse: ONLY triggers if shift was JUST pressed (buffer > 0)
-    if (slideBufferTimer > 0f && IsGrounded())
+    if (slideBufferTimer > 0f && IsGrounded() && canSlide)
     {
       if (horizontalVelocity.magnitude > 0.1f)
       {
         StartSliding();
         slideBufferTimer = 0f; // Consume slide buffer immediately
+
+        slideCooldownTimer = slideCooldown;
+        canSlide = false;
       }
     }
 
