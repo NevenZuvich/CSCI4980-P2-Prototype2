@@ -2,14 +2,17 @@ using UnityEngine;
 
 public class CheckpointController : MonoBehaviour
 {
+    [SerializeField] private float yOffset = 1.0f; // Small lift to prevent falling through floor
 
-    void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Player"))
+        if (other.CompareTag("Player"))
         {
-            PlayerController playerController = other.gameObject.GetComponent<PlayerController>();
-
-            playerController.respawnPosition = transform.position + 6 * Vector3.up;
+            PlayerController playerController = other.GetComponent<PlayerController>();
+            if (playerController != null)
+            {
+                playerController.respawnPosition = transform.position + (Vector3.up * yOffset);
+            }
         }
     }
 }
