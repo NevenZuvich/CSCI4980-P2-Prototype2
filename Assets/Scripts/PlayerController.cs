@@ -4,9 +4,8 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-  [SerializeField] GameObject spawnPosObj;
-
-  public Vector3 respawnPosition;
+  [SerializeField] public GameObject respawnCheckpoint;
+  [SerializeField] private float ySpawnOffset = 1.0f; // Small lift to prevent falling through floor
 
   enum MovementState
   {
@@ -104,8 +103,8 @@ public class PlayerController : MonoBehaviour
 
     yaw = transform.eulerAngles.y;
     
-    if (spawnPosObj != null)
-      gameObject.transform.position = spawnPosObj.transform.position;
+    if (respawnCheckpoint != null)
+      RespawnAtCheckpoint();
   }
 
   void Update()
@@ -471,8 +470,19 @@ public class PlayerController : MonoBehaviour
     if (other.gameObject.CompareTag("DeathBarrier"))
     {
       // put at respawn pos
-      transform.position = respawnPosition;
+      //
+      RespawnAtCheckpoint();
+    }
+  }
+
+  void RespawnAtCheckpoint()
+  {
+    if (respawnCheckpoint != null)
+    {
+      transform.position = respawnCheckpoint.transform.position + (Vector3.up * ySpawnOffset);
+      rb.linearVelocity = Vector3.zero;
     }
   }
 }
+
 

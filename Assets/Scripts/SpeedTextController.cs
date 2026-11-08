@@ -23,9 +23,14 @@ public class SpeedTextController : MonoBehaviour
 
           float absRoundedSpeed = Mathf.Round(horizontalSpeed *100f) / 100f;
           textComponent.text = absRoundedSpeed.ToString();
-          if (absRoundedSpeed > 21)
+
+          if (absRoundedSpeed > 33)
+            textComponent.color = new Color(0, 0, 139f / 255f, 1); // dark blue
+          else if (absRoundedSpeed > 28)
+            textComponent.color = new Color(155f / 255f, 135f/ 255f, 12f / 255f, 1); // dark yellow
+          else if (absRoundedSpeed > 23)
             textComponent.color = new Color(1, 165f/ 255f, 0, 1); // orange
-          else if (absRoundedSpeed > 16)
+          else if (absRoundedSpeed > 18)
             textComponent.color = Color.red;
           else
             textComponent.color = Color.white;

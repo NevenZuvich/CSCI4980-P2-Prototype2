@@ -10,8 +10,9 @@ public class CheckpointController : MonoBehaviour
         {
             PlayerController playerController = other.GetComponent<PlayerController>();
             if (playerController != null)
-            {
-                playerController.respawnPosition = transform.position + (Vector3.up * yOffset);
+            {   
+                // set respawn checkpoint as this checkpoint
+                playerController.respawnCheckpoint = gameObject;
             }
         }
     }
